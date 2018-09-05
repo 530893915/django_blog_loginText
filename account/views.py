@@ -50,7 +50,7 @@ def regist(request):
             password = form.cleaned_data.get('password', None)
             password_repeat = form.cleaned_data.get('password_repeat', None)
             if password == password_repeat:
-                user = UserModel(username = username, password=password)
+                user = UserModel(name = username, password=password)
                 user.save()
             return HttpResponse("注册成功！")
         else:
