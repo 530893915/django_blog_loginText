@@ -4,6 +4,7 @@ from django.shortcuts import render,reverse
 from .models import UserModel
 from django.http import HttpResponse,HttpResponseRedirect
 import uuid
+from .forms import RegistForm
 
 # Create your views here.
 def index(request):
@@ -37,10 +38,20 @@ def login(request):
 
 def regist(request):
     if request.method == 'GET':
-        return render(request, 'regist.html')
+        form = RegistForm()
+        return render(request, 'regist.html',{'form':form})
     else:
-        username = request.POST.get('username', None)
-        password = request.POST.get('password', None)
-        userModel = UserModel(name=username, password=password)
-        userModel.save()
-    return HttpResponse('注册成功！')
+        # 这是post请求
+        # 1. 根据用户提交的数据初始化一个表单
+        form = RegistForm(request.POST)
+        # 2. 验证提交的数据是否合法
+        if form.is_valid():
+            username = form.cleaned_data.get('username', None)
+            password = form.cleaned_data.get('password', None)
+            password_repeat = form.cleaned_data.get('password_repeat', None)
+            if password == password_repeat:
+                user = UserModel(username = username, password=password)
+                user.save()
+            return HttpResponse("注册成功！")
+        else:
+            return render(request, 'regist.html', {'errors': form.errors})

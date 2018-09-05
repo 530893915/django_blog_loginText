@@ -18,10 +18,21 @@
 					<td><label for="">密码:</label></td>
 					<td><input name="password" type="password" placeholder="请输入密码"></td>
 				</tr>
+                <tr>
+					<td><label for="">确认密码:</label></td>
+					<td><input name="password_repeat" type="password" placeholder="请确认密码"></td>
+				</tr>
 				<tr>
 					<td></td>
 					<td><input type="submit" value='注册'></td>
 				</tr>
+                <tr>
+					<td></td>
+					<td>
+						{% autoescape on %}
+							{{errors}}
+						{% endautoescape %}
+					</td>
 			</form>
 		</tbody>
 	</table>
